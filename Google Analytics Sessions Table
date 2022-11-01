@@ -1,0 +1,19 @@
+SELECT
+  PARSE_DATE("%Y%m%d", date) AS date,
+  EXTRACT(DAYOFWEEK FROM PARSE_DATE("%Y%m%d", date)) AS day_week,
+  EXTRACT(TIME FROM DATETIME(TIMESTAMP_SECONDS(visitStartTime), "America/New_York")) AS start_time,
+  visitId,
+  fullVisitorId,
+  geoNetwork.country,
+  device.deviceCategory,
+  channelGrouping,
+  socialEngagementType,
+  trafficSource.source,
+  (totals.totalTransactionRevenue/1000000) AS totalTransactionRevenue,
+  totals.pageviews,
+  totals.visits,
+  totals.timeOnSite,
+  totals.Bounces,
+  totals.newVisits
+FROM
+  `bigquery-public-data.google_analytics_sample.ga_sessions_20170801`
