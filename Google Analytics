@@ -1,0 +1,21 @@
+SELECT
+  Name, Category, SUM(Quantity) as Sum_Quantity, AVG(Price) as Avg_Price, SUM(Revenue) as Sum_Revenue
+FROM
+  (SELECT
+  p.v2ProductName as Name,
+  p.v2ProductCategory as Category,
+  p.productQuantity as Quantity, 
+  p.productPrice/1000000 as Price,
+  p.productRevenue/1000000 as Revenue,
+  FROM
+  `bigquery-public-data.google_analytics_sample.ga_sessions_20170801` AS sessions,
+  sessions.hits as h,
+  h.product as p
+  WHERE
+    p.isImpression IS NULL
+    AND
+    eCommerceAction.action_type = "6")
+GROUP BY
+Name, Category
+ORDER BY
+  Sum_Revenue DESC
